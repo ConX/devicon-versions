@@ -1,10 +1,89 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My Cool Website</title>
+    <title>Devicon Versions</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <script>
+      function updateVersions() {
+        let multicolor = document.getElementById("multi-color").checked;
+        let wordmark = document.getElementById("wordmark").checked;
+        let line = document.getElementById("line").checked;
+        let versions = document.getElementById("versions");
+
+        let lookup_table_svg = {
+          "000": "original",
+          "001": "original, line",
+          "010": "original, original-wordmark",
+          "011": "original, original-wordmark, line, line-wordmark*",
+          100: "original, plain",
+          101: "original, plain, line",
+          110: "original, original-wordmark, plain, plain-wordmark",
+          111: "original, original-wordmark, plain, plain-wordmark, line, line-wordmark*",
+        };
+        let lookup_table_font = {
+          "000": "original",
+          "001": "original, line",
+          "010": "original, original-wordmark†",
+          "011": "original, original-wordmark†, line†, line-wordmark*†",
+          100: "plain",
+          101: "plain, line†",
+          110: "plain, plain-wordmark†",
+          111: "plain, plain-wordmark†, line†, line-wordmark*†",
+        };
+        key = [multicolor, wordmark, line].map((x) => Number(x)).join("");
+        console.log("key: " + key);
+        let content =
+          "{\n\tversions: {\n\t\tsvg: [" +
+          lookup_table_svg[key] +
+          "],\n\t\tfont: [" +
+          lookup_table_font[key] +
+          "]\n\t}\n}";
+        versions.value = content;
+      }
+
+      function init() {
+        updateVersions();
+        document.getElementById("devicon-version").onchange = updateVersions;
+      }
+    </script>
   </head>
-  <body>
-    <h1>Welcome to my website! ⭐️</h1>
-    <p>How was your day? 🎉</p>
+  <body <body onload="init()">
+    >
+    <div class="container">
+      <form id="devicon-version">
+        <div class="form-group">
+          <input
+            type="checkbox"
+            name="multi-color"
+            id="multi-color"
+            value="true"
+          />
+          <label for="multi-color">
+            Is there a multi-color <strong>AND</strong> a plain version?</label
+          >
+        </div>
+        <div class="form-group">
+          <input type="checkbox" name="wordmark" id="wordmark" value="true" />
+          <label for="wordmark">Is there a version with extra text?</label>
+        </div>
+        <div class="form-group">
+          <input type="checkbox" name="line" id="line" value="true" />
+          <label for="line"
+            >Is there or a line version or can one be created?</label
+          >
+        </div>
+        <div class="form-group">
+          <label for="versions">Versions:</label><br />
+          <textarea rows="10" cols="60" id="versions"></textarea>
+        </div>
+      </form>
+      *: Optional if the line version with text looks good.<br />
+      †: Optional if the font version looks good.
+    </div>
   </body>
 </html>
